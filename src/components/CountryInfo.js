@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { AtAccordion, AtList, AtListItem } from 'taro-ui';
-import { mapCountryName } from '../utils';
+import { mapCountryCnName } from '../utils';
 
 export default class CountryInfo extends Taro.Component {
   constructor(props) {
@@ -46,7 +46,11 @@ export default class CountryInfo extends Taro.Component {
   render() {
     return (
       <View>
-        <AtAccordion open={this.state.open} onClick={this.handleClick.bind(this)} title={mapCountryName(this.props.countryName)}>
+        <AtAccordion
+          open={this.state.open}
+          onClick={this.handleClick.bind(this)}
+          title={mapCountryCnName(this.props.countryName)}
+        >
           <AtList hasBorder={false}>
             <AtListItem title={'今日确诊数：' + this.state.todayCases} />
             <AtListItem title={'今日死亡数：' + this.state.todayDeaths} />
