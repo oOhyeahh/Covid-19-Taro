@@ -14,11 +14,10 @@ export default class Timeline extends Taro.Component {
   componentWillMount() {}
 
   componentDidMount() {
-    fetch(`https://corona.lmao.ninja/v2/historical/${this.props.countryName}`)
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
+    Taro.request({
+      url: `https://corona.lmao.ninja/v2/historical/${this.props.countryName}`,
+      success: res => {
+        let data = res.data;
         const timelineData = data['timeline'];
         let cases = divideByMonth(timelineData['cases']);
         let deaths = divideByMonth(timelineData['deaths']);
@@ -26,12 +25,12 @@ export default class Timeline extends Taro.Component {
         let death_list = [];
 
         for (let [key, value] of cases) {
-          var info = mapMonthName(key) + value.toString();
+          var info = mapMonthName(key) + value.toLocaleString();
           case_list.push({ title: info });
         }
 
         for (let [key, value] of deaths) {
-          var info = mapMonthName(key) + value.toString();
+          var info = mapMonthName(key) + value.toLocaleString();
           death_list.push({ title: info });
         }
 
@@ -39,7 +38,8 @@ export default class Timeline extends Taro.Component {
           cases: case_list,
           deaths: death_list
         });
-      });
+      }
+    });
   }
   render() {
     return (
@@ -48,11 +48,11 @@ export default class Timeline extends Taro.Component {
 
         <View className='at-row'>
           <View className='at-col at-col-6'>
-            <AtDivider content='确诊病例' />
+            <AtDivider content='总确诊病例' />
             <AtTimeline items={this.state.cases} />
           </View>
           <View className='at-col at-col-6'>
-            <AtDivider content='死亡病例' />
+            <AtDivider content='总死亡病例' />
             <AtTimeline items={this.state.deaths} />
           </View>
         </View>

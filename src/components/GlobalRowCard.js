@@ -17,25 +17,23 @@ export default class GlobalRowCard extends Taro.Component {
 
   componentDidMount() {
     // fetch data from api
-    fetch('https://corona.lmao.ninja/all')
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
+    Taro.request({
+      url: 'https://corona.lmao.ninja/all',
+      success: res => {
+        let data = res.data;
         this.setState({
-          cases: data['cases'],
-          death: data['deaths'],
-          recovered: data['recovered'],
-          exist: data['active']
+          cases: data['cases'].toLocaleString(),
+          death: data['deaths'].toLocaleString(),
+          recovered: data['recovered'].toLocaleString(),
+          exist: data['active'].toLocaleString()
         });
-      });
+      }
+    })
   }
   render() {
     return (
       <View>
-        <AtCard
-          title='全球新冠病毒疫情信息'
-        >
+        <AtCard title='全球新冠病毒疫情信息'>
           <View className='at-row' style='font-size:16px'>
             <View className='at-col'>总数: {this.state.cases}</View>
             <View className='at-col'>现存病例: {this.state.exist}</View>

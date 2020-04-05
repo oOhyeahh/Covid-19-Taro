@@ -20,21 +20,21 @@ export default class CountryInfo extends Taro.Component {
   componentWillMount() {}
 
   componentDidMount() {
-    fetch(`https://corona.lmao.ninja/countries/${this.props.countryName}`)
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
+    Taro.request({
+      url: `https://corona.lmao.ninja/countries/${this.props.countryName}`,
+      success: res => {
+        let data = res.data;
         this.setState({
-          todayCases: data['todayCases'],
-          todayDeaths: data['todayDeaths'],
-          cases: data['cases'],
-          deaths: data['deaths'],
-          recovered: data['recovered'],
-          active: data['active'],
-          critical: data['critical']
+          todayCases: data['todayCases'].toLocaleString(),
+          todayDeaths: data['todayDeaths'].toLocaleString(),
+          cases: data['cases'].toLocaleString(),
+          deaths: data['deaths'].toLocaleString(),
+          recovered: data['recovered'].toLocaleString(),
+          active: data['active'].toLocaleString(),
+          critical: data['critical'].toLocaleString()
         });
-      });
+      }
+    });
   }
 
   handleClick(value) {
